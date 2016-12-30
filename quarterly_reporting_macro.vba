@@ -381,6 +381,7 @@ CHGDU = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "
 MH_TOTAL = Application.WorksheetFunction.Sum( _
                 Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHINI"), _
                 Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHFU"), _
+                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHDISC"), _
                 Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHDUHC") _
             )
 'MH indiv - # of New Patients Included in Column A
