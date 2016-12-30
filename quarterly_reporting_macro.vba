@@ -1,12 +1,12 @@
 Public Sub clear()
 Worksheets("billings").Range("A2:V9999").ClearContents
 
-Worksheets("IndividualSummary-Detailed").Range("B8:D61").ClearContents
+Worksheets("IndividualSummary-Detailed").Range("B8:D67").ClearContents
 Worksheets("IndividualSummary-Detailed").Range("B2").ClearContents
 Worksheets("IndividualSummary-Detailed").Range("J10").ClearContents
 Worksheets("IndividualSummary-Detailed").Range("J13").ClearContents
 
-Worksheets("IndividualSummary-Basic").Range("B9:D29").ClearContents
+Worksheets("IndividualSummary-Basic").Range("B9:D33").ClearContents
 Worksheets("IndividualSummary-Basic").Range("B2").ClearContents
 
 Worksheets("temp").Cells.ClearContents
@@ -16,36 +16,22 @@ Public Sub CalcIndividualResp()
 
 ' New Billing Codes - 2016-12-28
 
-' Physiotherapy
-Dim PTNS As Long
-
 ' CHF
-Dim CHFINI As Long
-Dim CHFFU As Long
-Dim CHFNS As Long
-
-Dim CHGINI As Long
-Dim CHGFU As Long
+Dim CHG_TOTAL As Long
+Dim CHG_NEW As Long
 Dim CHGDU As Long
-Dim CHGNS As Long
 
 ' Health Links
-Dim HKINI As Long
-Dim HKFU As Long
+Dim HK_TOTAL As Long
+Dim HK_NEW As Long
 Dim HKDUHC As Long
-Dim HKDISC As Long
-
-' Mental Health
-Dim MHDROP As Long
-Dim MHDISC As Long
-Dim MHNS As Long
 
 ' CKD
-Dim CKDINI As Long
-Dim CKDFU As Long
+Dim CKDGEN_TOTAL As Long
+Dim CKDGRP_TOTAL As Long
+Dim CKD_TOTAL As Long
+Dim CKD_NEW As Long
 Dim CKDDUH As Long
-Dim CKDGRP As Long
-Dim CKDSCR As Long
 
 ' End of new billing codes
 
@@ -379,6 +365,18 @@ CHF_NEW = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"),
 'CHF - # of Home Visits / DUHC Included in Column A
 CHFDU = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CHFDU")
 
+'CHG - CHF Group
+'# Patient Visits
+CHG_TOTAL = Application.WorksheetFunction.Sum( _
+                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CHGINI"), _
+                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CHGFU"), _
+                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CHGDU") _
+            )
+            
+CHG_NEW = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CHGINI")
+
+CHGDU = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CHGDU")
+
 'MH indiv - # of Patient Visits
 MH_TOTAL = Application.WorksheetFunction.Sum( _
                 Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHINI"), _
@@ -660,6 +658,32 @@ RNHW_TOTAL = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J
 Call TrueStatus("Y", "RNHW")
 RNHW_NEW = Application.WorksheetFunction.CountIf(Sheets("temp").Range("Y:Y"), ">0")
 
+'Health Links
+HK_TOTAL = Application.WorksheetFunction.Sum( _
+                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "HKINI"), _
+                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "HKFU"), _
+                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "HKDUHC") _
+            )
+            
+HK_NEW = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "HKINI")
+
+HKDUHC = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "HKDUHC")
+
+'CKD
+CKDGEN_TOTAL = Application.WorksheetFunction.Sum( _
+                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CKDINI"), _
+                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CKDFU"), _
+                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CKDDUH"), _
+                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CKDSCR") _
+            )
+            
+CKD_NEW = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CKDINI")
+
+CKDGRP_TOTAL = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CKDGRP")
+
+CKDDUH = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "CKDDUH")
+
+CKD_TOTAL = CKDGEN_TOTAL + CKDGRP_TOTAL
 
 'ENTERING VALUES INTO APPROPRIATE CELLS in "IndividualSummary-Detailed"
 Sheets("IndividualSummary-Detailed").Select
@@ -820,6 +844,16 @@ Sheets("IndividualSummary-Detailed").Range("B61").Value = HLI_TOTAL + FORM_TOTAL
 Sheets("IndividualSummary-Detailed").Range("C61").Value = HLI_NEW + FORM_NEW + MISCEL_NEW + INJECT_NEW + SWAB_NEW + LAB_NEW
 Sheets("IndividualSummary-Detailed").Range("D61").Value = HLDUHC
 
+Sheets("IndividualSummary-Detailed").Range("B65").Value = CKDGEN_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C65").Value = CKD_NEW
+Sheets("IndividualSummary-Detailed").Range("D65").Value = CKDDUH
+
+Sheets("IndividualSummary-Detailed").Range("B66").Value = CKDGRP_TOTAL
+
+Sheets("IndividualSummary-Detailed").Range("B67").Value = CHG_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C67").Value = CHG_NEW
+Sheets("IndividualSummary-Detailed").Range("D67").Value = CHGDU
+
 
 'ENTERING VALUES INTO APPROPRIATE CELLS in "IndividualSummary-Basic"
 Sheets("IndividualSummary-Basic").Select
@@ -840,9 +874,9 @@ Sheets("IndividualSummary-Basic").Range("B13").Value = CHOLG_TOTAL + CHOLFV_TOTA
 Sheets("IndividualSummary-Basic").Range("C13").Value = CHOLG_NEW + CHOLFV_NEW + CHOLGS_NEW
 Sheets("IndividualSummary-Basic").Range("D13").Value = CHOLDU + CHOLFD
 
-Sheets("IndividualSummary-Basic").Range("B14").Value = CHF_TOTAL
-Sheets("IndividualSummary-Basic").Range("C14").Value = CHF_NEW
-Sheets("IndividualSummary-Basic").Range("D14").Value = CHFDU
+Sheets("IndividualSummary-Basic").Range("B14").Value = CHF_TOTAL + CHG_TOTAL
+Sheets("IndividualSummary-Basic").Range("C14").Value = CHF_NEW + CHG_NEW
+Sheets("IndividualSummary-Basic").Range("D14").Value = CHFDU + CHGDU
 
 Sheets("IndividualSummary-Basic").Range("B15").Value = MH_TOTAL + MHMBSG_TOTAL + MHMBCG_TOTAL + MHANXG_TOTAL + MHDEP_TOTAL
 Sheets("IndividualSummary-Basic").Range("C15").Value = MH_NEW + MHMBSG_NEW + MHMBCG_NEW + MHANXG_NEW + MHDEP_NEW
@@ -886,6 +920,14 @@ Sheets("IndividualSummary-Basic").Range("D27").Value = PAINDU
 Sheets("IndividualSummary-Basic").Range("B29").Value = HLI_TOTAL + FORM_TOTAL + MISCEL_TOTAL + INJECT_TOTAL + SWAB_TOTAL + LAB_TOTAL
 Sheets("IndividualSummary-Basic").Range("C29").Value = HLI_NEW + FORM_NEW + MISCEL_NEW + INJECT_NEW + SWAB_NEW + LAB_NEW
 Sheets("IndividualSummary-Basic").Range("D29").Value = HLDUHC
+
+Sheets("IndividualSummary-Basic").Range("B32").Value = HK_TOTAL
+Sheets("IndividualSummary-Basic").Range("C32").Value = HK_NEW
+Sheets("IndividualSummary-Basic").Range("D32").Value = HKDUHC
+
+Sheets("IndividualSummary-Basic").Range("B33").Value = CKD_TOTAL
+Sheets("IndividualSummary-Basic").Range("C33").Value = CKD_NEW
+Sheets("IndividualSummary-Basic").Range("D33").Value = CKDDUH
 
 'provider name on report
 Sheets("IndividualSummary-Basic").Range("B2").Value = Sheets("billings").Range("O2").Value & ", " & Sheets("billings").Range("P2").Value
@@ -946,6 +988,3 @@ With Sheets("temp")
 End With
 
 End Sub
-
-
-
