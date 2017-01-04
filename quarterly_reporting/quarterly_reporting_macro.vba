@@ -92,6 +92,7 @@ Dim CHFDU As Long
 Dim MH_TOTAL As Long
 Dim MH_NEW As Long
 Dim MHDUHC As Long
+Dim MHDISC As Long
 
 Dim MHDEP_TOTAL As Long
 Dim MHDEP_NEW As Long
@@ -197,8 +198,8 @@ Dim PT_NEW As Long
 Dim PTDUHC As Long
 Dim PT_disc As Long
 
-Dim mind_TOTAL As Long
-Dim mind_NEW As Long
+Dim MINDGS_TOTAL As Long
+Dim MINDGS_NEW As Long
 
 Dim MISCEL_TOTAL As Long
 Dim MISCEL_NEW As Long
@@ -381,13 +382,14 @@ CHGDU = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "
 MH_TOTAL = Application.WorksheetFunction.Sum( _
                 Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHINI"), _
                 Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHFU"), _
-                Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHDISC"), _
                 Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHDUHC") _
             )
 'MH indiv - # of New Patients Included in Column A
 MH_NEW = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHINI")
 'MH indiv - # of Home Visits / DUHC Included in Column A
 MHDUHC = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHDUHC")
+'MH indiv - # of Discharge visits. May be billed separately or at same time as FU so counted separately
+MHDISC = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHDISC")
 
 'MHGS - # of Patient Visits
 MHDEP_TOTAL = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "MHDEPG")
@@ -605,10 +607,10 @@ PTDUHC = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), 
 PT_disc = Application.WorksheetFunction.CountIf(Sheets("billings").Range("J:J"), "PTDISC")
 
 'Mindful Eating GS - # of Patient Visits
-mind_TOTAL = Application.WorksheetFunction.SumIf(Sheets("billings").Range("J:J"), "MINDGS", Sheets("billings").Range("L:L"))
+MINDGS_TOTAL = Application.WorksheetFunction.SumIf(Sheets("billings").Range("J:J"), "MINDGS", Sheets("billings").Range("L:L"))
 'Mindful Eating GS - # of New Patients Included in Column A
 Call TrueStatus("R", "MINDGS")
-mind_NEW = Application.WorksheetFunction.CountIf(Sheets("temp").Range("R:R"), ">0")
+MINDGS_NEW = Application.WorksheetFunction.CountIf(Sheets("temp").Range("R:R"), ">0")
 
 'MISCEL RN - # of Patient Visits
 MISCEL_TOTAL = Application.WorksheetFunction.SumIf(Sheets("billings").Range("J:J"), "MISCEL", Sheets("billings").Range("L:L"))
@@ -728,132 +730,133 @@ Sheets("IndividualSummary-Detailed").Range("D17").Value = CHOLFD
 Sheets("IndividualSummary-Detailed").Range("B18").Value = CHOLGS_TOTAL
 Sheets("IndividualSummary-Detailed").Range("C18").Value = CHOLGS_NEW
 
-Sheets("IndividualSummary-Detailed").Range("B19").Value = CHF_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C19").Value = CHF_NEW
-Sheets("IndividualSummary-Detailed").Range("D19").Value = CHFDU
+Sheets("IndividualSummary-Detailed").Range("B19").Value = CHG_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C19").Value = CHG_NEW
+Sheets("IndividualSummary-Detailed").Range("D19").Value = CHGDU
 
-Sheets("IndividualSummary-Detailed").Range("B21").Value = MH_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C21").Value = MH_NEW
-Sheets("IndividualSummary-Detailed").Range("D21").Value = MHDUHC
+Sheets("IndividualSummary-Detailed").Range("B20").Value = CHF_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C20").Value = CHF_NEW
+Sheets("IndividualSummary-Detailed").Range("D20").Value = CHFDU
 
-Sheets("IndividualSummary-Detailed").Range("B22").Value = MHMBSG_TOTAL
-Sheets("IndividualSummary-Detailed").Range("B23").Value = MHMBCG_TOTAL
-Sheets("IndividualSummary-Detailed").Range("B24").Value = MHANXG_TOTAL
-Sheets("IndividualSummary-Detailed").Range("B25").Value = MHDEP_TOTAL
+Sheets("IndividualSummary-Detailed").Range("B21").Value = CKDGEN_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C21").Value = CKD_NEW
+Sheets("IndividualSummary-Detailed").Range("D21").Value = CKDDUH
 
-Sheets("IndividualSummary-Detailed").Range("C22").Value = MHMBSG_NEW
-Sheets("IndividualSummary-Detailed").Range("C23").Value = MHMBCG_NEW
-Sheets("IndividualSummary-Detailed").Range("C24").Value = MHANXG_NEW
-Sheets("IndividualSummary-Detailed").Range("C25").Value = MHDEP_NEW
+Sheets("IndividualSummary-Detailed").Range("B22").Value = CKDGRP_TOTAL
 
-Sheets("IndividualSummary-Detailed").Range("B28").Value = SEN_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C28").Value = SEN_NEW
-Sheets("IndividualSummary-Detailed").Range("D28").Value = SENDU
+Sheets("IndividualSummary-Detailed").Range("B24").Value = MH_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C24").Value = MH_NEW
+Sheets("IndividualSummary-Detailed").Range("D24").Value = MHDUHC
 
-Sheets("IndividualSummary-Detailed").Range("B29").Value = SENMGS_TOTAL
-Sheets("IndividualSummary-Detailed").Range("B30").Value = SENEGS_TOTAL
-Sheets("IndividualSummary-Detailed").Range("B31").Value = SENFGS_TOTAL
-Sheets("IndividualSummary-Detailed").Range("B32").Value = SENNGS_TOTAL
-Sheets("IndividualSummary-Detailed").Range("B33").Value = SENCGS_TOTAL
+Sheets("IndividualSummary-Detailed").Range("B25").Value = MHMBSG_TOTAL
+Sheets("IndividualSummary-Detailed").Range("B26").Value = MHMBCG_TOTAL
+Sheets("IndividualSummary-Detailed").Range("B27").Value = MHANXG_TOTAL
+Sheets("IndividualSummary-Detailed").Range("B28").Value = MHDEP_TOTAL
 
-Sheets("IndividualSummary-Detailed").Range("C29").Value = SENMGS_NEW
-Sheets("IndividualSummary-Detailed").Range("C30").Value = SENEGS_NEW
-Sheets("IndividualSummary-Detailed").Range("C31").Value = SENFGS_NEW
-Sheets("IndividualSummary-Detailed").Range("C32").Value = SENNGS_NEW
-Sheets("IndividualSummary-Detailed").Range("C33").Value = SENCGS_NEW
+Sheets("IndividualSummary-Detailed").Range("C25").Value = MHMBSG_NEW
+Sheets("IndividualSummary-Detailed").Range("C26").Value = MHMBCG_NEW
+Sheets("IndividualSummary-Detailed").Range("C27").Value = MHANXG_NEW
+Sheets("IndividualSummary-Detailed").Range("C28").Value = MHDEP_NEW
 
-Sheets("IndividualSummary-Detailed").Range("B34").Value = SENSOC_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C34").Value = SENSOC_NEW
-Sheets("IndividualSummary-Detailed").Range("D34").Value = SENSOD
+Sheets("IndividualSummary-Detailed").Range("B29").Value = MHDISC
 
-Sheets("IndividualSummary-Detailed").Range("B35").Value = medrec_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C35").Value = medrec_NEW
-Sheets("IndividualSummary-Detailed").Range("D35").Value = MEDDHC
+Sheets("IndividualSummary-Detailed").Range("B32").Value = SEN_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C32").Value = SEN_NEW
+Sheets("IndividualSummary-Detailed").Range("D32").Value = SENDU
 
-Sheets("IndividualSummary-Detailed").Range("B37").Value = HLI_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C37").Value = HLI_NEW
-Sheets("IndividualSummary-Detailed").Range("D37").Value = HLDUHC
+Sheets("IndividualSummary-Detailed").Range("B33").Value = SENMGS_TOTAL
+Sheets("IndividualSummary-Detailed").Range("B34").Value = SENEGS_TOTAL
+Sheets("IndividualSummary-Detailed").Range("B35").Value = SENFGS_TOTAL
+Sheets("IndividualSummary-Detailed").Range("B36").Value = SENNGS_TOTAL
+Sheets("IndividualSummary-Detailed").Range("B37").Value = SENCGS_TOTAL
 
-Sheets("IndividualSummary-Detailed").Range("B38").Value = SC_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C38").Value = SC_NEW
-Sheets("IndividualSummary-Detailed").Range("D38").Value = SCDUHC
+Sheets("IndividualSummary-Detailed").Range("C33").Value = SENMGS_NEW
+Sheets("IndividualSummary-Detailed").Range("C34").Value = SENEGS_NEW
+Sheets("IndividualSummary-Detailed").Range("C35").Value = SENFGS_NEW
+Sheets("IndividualSummary-Detailed").Range("C36").Value = SENNGS_NEW
+Sheets("IndividualSummary-Detailed").Range("C37").Value = SENCGS_NEW
 
-Sheets("IndividualSummary-Detailed").Range("B39").Value = WM_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C39").Value = WM_NEW
-Sheets("IndividualSummary-Detailed").Range("D39").Value = WDUHC
+Sheets("IndividualSummary-Detailed").Range("B38").Value = SENSOC_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C38").Value = SENSOC_NEW
+Sheets("IndividualSummary-Detailed").Range("D38").Value = SENSOD
 
-Sheets("IndividualSummary-Detailed").Range("B40").Value = WMGS_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C40").Value = WMGS_NEW
+Sheets("IndividualSummary-Detailed").Range("B39").Value = medrec_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C39").Value = medrec_NEW
+Sheets("IndividualSummary-Detailed").Range("D39").Value = MEDDHC
 
-Sheets("IndividualSummary-Detailed").Range("B41").Value = VAC_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C41").Value = VAC_NEW
+Sheets("IndividualSummary-Detailed").Range("B41").Value = HLI_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C41").Value = HLI_NEW
+Sheets("IndividualSummary-Detailed").Range("D41").Value = HLDUHC
 
-Sheets("IndividualSummary-Detailed").Range("B42").Value = PD_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C42").Value = PD_NEW
-Sheets("IndividualSummary-Detailed").Range("D42").Value = PDDUHC
+Sheets("IndividualSummary-Detailed").Range("B42").Value = SC_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C42").Value = SC_NEW
+Sheets("IndividualSummary-Detailed").Range("D42").Value = SCDUHC
 
-Sheets("IndividualSummary-Detailed").Range("B43").Value = INSOMI_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C43").Value = INSOMI_NEW
-Sheets("IndividualSummary-Detailed").Range("D43").Value = INSODU
+Sheets("IndividualSummary-Detailed").Range("B43").Value = WM_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C43").Value = WM_NEW
+Sheets("IndividualSummary-Detailed").Range("D43").Value = WDUHC
 
-Sheets("IndividualSummary-Detailed").Range("B44").Value = INSOMGS_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C44").Value = INSOMGS_NEW
+Sheets("IndividualSummary-Detailed").Range("B44").Value = WMGS_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C44").Value = WMGS_NEW
 
-Sheets("IndividualSummary-Detailed").Range("B45").Value = MAT_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C45").Value = MAT_NEW
-Sheets("IndividualSummary-Detailed").Range("D45").Value = MCDUHC
+Sheets("IndividualSummary-Detailed").Range("B45").Value = VAC_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C45").Value = VAC_NEW
 
-Sheets("IndividualSummary-Detailed").Range("B46").Value = CANCERV_TOTAL
-Sheets("IndividualSummary-Detailed").Range("B47").Value = CANCERR_TOTAL
+Sheets("IndividualSummary-Detailed").Range("B46").Value = PD_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C46").Value = PD_NEW
+Sheets("IndividualSummary-Detailed").Range("D46").Value = PDDUHC
 
-Sheets("IndividualSummary-Detailed").Range("C46").Value = CANCERV_NEW
+Sheets("IndividualSummary-Detailed").Range("B47").Value = INSOMI_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C47").Value = INSOMI_NEW
+Sheets("IndividualSummary-Detailed").Range("D47").Value = INSODU
 
-Sheets("IndividualSummary-Detailed").Range("D46").Value = CANDU
+Sheets("IndividualSummary-Detailed").Range("B48").Value = INSOMGS_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C48").Value = INSOMGS_NEW
 
-Sheets("IndividualSummary-Detailed").Range("B48").Value = PAIN_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C48").Value = PAIN_NEW
-Sheets("IndividualSummary-Detailed").Range("D48").Value = PAINDU
+Sheets("IndividualSummary-Detailed").Range("B49").Value = MAT_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C49").Value = MAT_NEW
+Sheets("IndividualSummary-Detailed").Range("D49").Value = MCDUHC
 
-Sheets("IndividualSummary-Detailed").Range("B49").Value = PAINGS_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C49").Value = PAINGS_NEW
+Sheets("IndividualSummary-Detailed").Range("B50").Value = CANCERV_TOTAL
 
-Sheets("IndividualSummary-Detailed").Range("B50").Value = PT_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C50").Value = PT_NEW
-Sheets("IndividualSummary-Detailed").Range("D50").Value = PTDUHC
+Sheets("IndividualSummary-Detailed").Range("B51").Value = CANCERR_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C51").Value = CANCERV_NEW
+Sheets("IndividualSummary-Detailed").Range("D51").Value = CANDU
 
-Sheets("IndividualSummary-Detailed").Range("C13").Value = PT_disc
+Sheets("IndividualSummary-Detailed").Range("B52").Value = PAIN_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C52").Value = PAIN_NEW
+Sheets("IndividualSummary-Detailed").Range("D52").Value = PAINDU
 
-Sheets("IndividualSummary-Detailed").Range("B51").Value = mind_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C51").Value = mind_NEW
+Sheets("IndividualSummary-Detailed").Range("B53").Value = PAINGS_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C53").Value = PAINGS_NEW
 
-Sheets("IndividualSummary-Detailed").Range("B53").Value = MISCEL_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C53").Value = MISCEL_NEW
-Sheets("IndividualSummary-Detailed").Range("B54").Value = INJECT_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C54").Value = INJECT_NEW
-Sheets("IndividualSummary-Detailed").Range("B55").Value = BPCHECK_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C55").Value = BPCHECK_NEW
-Sheets("IndividualSummary-Detailed").Range("B56").Value = SWAB_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C56").Value = SWAB_NEW
-Sheets("IndividualSummary-Detailed").Range("B57").Value = LAB_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C57").Value = LAB_NEW
-Sheets("IndividualSummary-Detailed").Range("B58").Value = FORM_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C58").Value = FORM_NEW
-Sheets("IndividualSummary-Detailed").Range("B59").Value = RNHW_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C59").Value = RNHW_NEW
+Sheets("IndividualSummary-Detailed").Range("B54").Value = PT_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C54").Value = PT_NEW
+Sheets("IndividualSummary-Detailed").Range("D54").Value = PTDUHC
 
-Sheets("IndividualSummary-Detailed").Range("B61").Value = HLI_TOTAL + FORM_TOTAL + MISCEL_TOTAL + INJECT_TOTAL + SWAB_TOTAL + LAB_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C61").Value = HLI_NEW + FORM_NEW + MISCEL_NEW + INJECT_NEW + SWAB_NEW + LAB_NEW
-Sheets("IndividualSummary-Detailed").Range("D61").Value = HLDUHC
+Sheets("IndividualSummary-Detailed").Range("J13").Value = PT_disc
 
-Sheets("IndividualSummary-Detailed").Range("B65").Value = CKDGEN_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C65").Value = CKD_NEW
-Sheets("IndividualSummary-Detailed").Range("D65").Value = CKDDUH
+Sheets("IndividualSummary-Detailed").Range("B55").Value = MINDGS_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C55").Value = MINDGS_NEW
 
-Sheets("IndividualSummary-Detailed").Range("B66").Value = CKDGRP_TOTAL
+Sheets("IndividualSummary-Detailed").Range("B57").Value = MISCEL_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C57").Value = MISCEL_NEW
+Sheets("IndividualSummary-Detailed").Range("B58").Value = INJECT_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C58").Value = INJECT_NEW
+Sheets("IndividualSummary-Detailed").Range("B59").Value = BPCHECK_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C59").Value = BPCHECK_NEW
+Sheets("IndividualSummary-Detailed").Range("B60").Value = SWAB_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C60").Value = SWAB_NEW
+Sheets("IndividualSummary-Detailed").Range("B61").Value = LAB_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C61").Value = LAB_NEW
+Sheets("IndividualSummary-Detailed").Range("B62").Value = FORM_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C62").Value = FORM_NEW
+Sheets("IndividualSummary-Detailed").Range("B63").Value = RNHW_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C63").Value = RNHW_NEW
 
-Sheets("IndividualSummary-Detailed").Range("B67").Value = CHG_TOTAL
-Sheets("IndividualSummary-Detailed").Range("C67").Value = CHG_NEW
-Sheets("IndividualSummary-Detailed").Range("D67").Value = CHGDU
+Sheets("IndividualSummary-Detailed").Range("B65").Value = HLI_TOTAL + FORM_TOTAL + MISCEL_TOTAL + INJECT_TOTAL + SWAB_TOTAL + LAB_TOTAL
+Sheets("IndividualSummary-Detailed").Range("C65").Value = HLI_NEW + FORM_NEW + MISCEL_NEW + INJECT_NEW + SWAB_NEW + LAB_NEW
+Sheets("IndividualSummary-Detailed").Range("D65").Value = HLDUHC
 
 
 'ENTERING VALUES INTO APPROPRIATE CELLS in "IndividualSummary-Basic"
@@ -883,6 +886,10 @@ Sheets("IndividualSummary-Basic").Range("B15").Value = MH_TOTAL + MHMBSG_TOTAL +
 Sheets("IndividualSummary-Basic").Range("C15").Value = MH_NEW + MHMBSG_NEW + MHMBCG_NEW + MHANXG_NEW + MHDEP_NEW
 Sheets("IndividualSummary-Basic").Range("D15").Value = MHDUHC
 
+Sheets("IndividualSummary-Basic").Range("B16").Value = CKD_TOTAL
+Sheets("IndividualSummary-Basic").Range("C16").Value = CKD_NEW
+Sheets("IndividualSummary-Basic").Range("D16").Value = CKDDUH
+
 Sheets("IndividualSummary-Basic").Range("B18").Value = SEN_TOTAL + SENMGS_TOTAL + SENEGS_TOTAL + SENFGS_TOTAL + SENNGS_TOTAL + SENCGS_TOTAL + SENSOC_TOTAL
 Sheets("IndividualSummary-Basic").Range("C18").Value = SEN_NEW + SENMGS_NEW + SENEGS_NEW + SENFGS_NEW + SENNGS_NEW + SENCGS_NEW + SENSOC_NEW
 Sheets("IndividualSummary-Basic").Range("D18").Value = SENDU + SENSOD
@@ -891,8 +898,8 @@ Sheets("IndividualSummary-Basic").Range("B20").Value = SC_TOTAL
 Sheets("IndividualSummary-Basic").Range("C20").Value = SC_NEW
 Sheets("IndividualSummary-Basic").Range("D20").Value = SCDUHC
 
-Sheets("IndividualSummary-Basic").Range("B21").Value = WM_TOTAL + WMGS_TOTAL + mind_TOTAL
-Sheets("IndividualSummary-Basic").Range("C21").Value = WM_NEW + WMGS_NEW + mind_NEW
+Sheets("IndividualSummary-Basic").Range("B21").Value = WM_TOTAL + WMGS_TOTAL + MINDGS_TOTAL
+Sheets("IndividualSummary-Basic").Range("C21").Value = WM_NEW + WMGS_NEW + MINDGS_NEW
 Sheets("IndividualSummary-Basic").Range("D21").Value = WDUHC
 
 Sheets("IndividualSummary-Basic").Range("B22").Value = VAC_TOTAL
@@ -925,10 +932,6 @@ Sheets("IndividualSummary-Basic").Range("D29").Value = HLDUHC
 Sheets("IndividualSummary-Basic").Range("B32").Value = HK_TOTAL
 Sheets("IndividualSummary-Basic").Range("C32").Value = HK_NEW
 Sheets("IndividualSummary-Basic").Range("D32").Value = HKDUHC
-
-Sheets("IndividualSummary-Basic").Range("B33").Value = CKD_TOTAL
-Sheets("IndividualSummary-Basic").Range("C33").Value = CKD_NEW
-Sheets("IndividualSummary-Basic").Range("D33").Value = CKDDUH
 
 'provider name on report
 Sheets("IndividualSummary-Basic").Range("B2").Value = Sheets("billings").Range("O2").Value & ", " & Sheets("billings").Range("P2").Value
