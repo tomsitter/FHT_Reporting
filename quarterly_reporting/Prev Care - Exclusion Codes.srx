@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<searchCriteria>
+    <lastChange>2017-05-01T13:40:45.107-04:00</lastChange>
+    <name>Prev Care - Exclusion Codes</name>
+    <lines lineNumber="0" parenthesisDepth="0" conjunctionFollowing="124" parenthesisDepthConjunctionFollowing="0">
+        <criterion category="BILLS" field="25000" operatorType="NUMBER" property="3500" operator="2100">
+            <containingText>Q0140A</containingText>
+        </criterion>
+    </lines>
+    <lines lineNumber="1" parenthesisDepth="0" conjunctionFollowing="124" parenthesisDepthConjunctionFollowing="0">
+        <criterion category="BILLS" field="25000" operatorType="NUMBER" property="3500" operator="2100">
+            <containingText>Q141A</containingText>
+        </criterion>
+    </lines>
+    <lines lineNumber="2" parenthesisDepth="0" conjunctionFollowing="38" parenthesisDepthConjunctionFollowing="0">
+        <criterion category="BILLS" field="25000" operatorType="NUMBER" property="3500" operator="2100">
+            <containingText>Q142A</containingText>
+        </criterion>
+    </lines>
+    <priority>MEDIUM</priority>
+    <reportFormat>
+        <columns>
+            <keyword>patHN</keyword>
+            <width>100</width>
+        </columns>
+        <columns>
+            <keyword>pat.Bills.Service_Code"Q140A".days_since_latest</keyword>
+            <width>100</width>
+            <name>Q140A Days Since Latest</name>
+        </columns>
+        <columns>
+            <keyword>pat.Bills.Service_Code"Q142A".days_since_latest</keyword>
+            <width>100</width>
+            <name>Q142A Days Since Latest</name>
+        </columns>
+        <columns>
+            <keyword>pat.Bills.Service_Code"Q141A".days_since_latest</keyword>
+            <width>100</width>
+            <name>Q141A Days Since Latest</name>
+        </columns>
+        <columns>
+            <keyword>Privacy</keyword>
+            <width>75</width>
+            <name>Privacy</name>
+        </columns>
+        <includeMatchingResults>false</includeMatchingResults>
+        <includeDeletedRecords>false</includeDeletedRecords>
+    </reportFormat>
+    <id>3410</id>
+    <isODSearch>false</isODSearch>
+</searchCriteria>
